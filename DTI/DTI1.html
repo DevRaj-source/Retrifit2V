@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vehicle Retrofitting Assessment</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 30px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+      padding: 15px;
+      background: #f9f9f9;
+      border-radius: 5px;
+      border-left: 4px solid #3498db;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    .weight-info {
+      font-size: 0.9em;
+      color: #7f8c8d;
+      margin-top: 5px;
+    }
+    button {
+      background: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      display: block;
+      margin: 20px auto;
+    }
+    button:hover {
+      background: #2980b9;
+    }
+    .results {
+      margin-top: 30px;
+      padding: 20px;
+      background: #ecf0f1;
+      border-radius: 5px;
+      display: none;
+    }
+    .summary {
+      font-size: 1.2em;
+      font-weight: bold;
+      margin: 20px 0;
+      padding: 15px;
+      text-align: center;
+      border-radius: 5px;
+    }
+    .progress-container {
+      width: 100%;
+      background-color: #f1f1f1;
+      border-radius: 5px;
+      margin: 15px 0;
+    }
+    .progress-bar {
+      height: 30px;
+      border-radius: 5px;
+      text-align: center;
+      line-height: 30px;
+      color: white;
+      font-weight: bold;
+    }
+    .scoring-guide {
+      background: #eaf2f8;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+    .scoring-guide h3 {
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Vehicle Retrofitting Assessment</h1>
+
+    <div class="scoring-guide">
+      <h3>Scoring Guide</h3>
+      <ul>
+        <li><strong>1-6</strong>: Retrofitting required (poor condition)</li>
+        <li><strong>7</strong>: Threshold value (borderline condition)</li>
+        <li><strong>8-10</strong>: No retrofitting required (good condition)</li>
+      </ul>
+      <p><strong>Total Score:</strong> Calculated out of 100 based on weighted component scores</p>
+    </div>
+
+    <div id="assessmentForm">
+      <!-- Input fields (same as before) -->
+      <div class="form-group">
+        <label for="chassis">Chassis Condition</label>
+        <input type="number" id="chassis" min="1" max="10" required />
+        <div class="weight-info">Weight: 15% of total assessment</div>
+      </div>
+
+      <div class="form-group">
+        <label for="suspension">Suspension System</label>
+        <input type="number" id="suspension" min="1" max="10" required />
+        <div class="weight-info">Weight: 15% of total assessment</div>
+      </div>
+
+      <div class="form-group">
+        <label for="brakes">Braking System</label>
+        <input type="number" id="brakes" min="1" max="10" required />
+        <div class="weight-info">Weight: 15% of total assessment</div>
+      </div>
+
+      <div class="form-group">
+        <label for="frame">Frame Integrity</label>
+        <input type="number" id="frame" min="1" max="10" required />
+        <div class="weight-info">Weight: 10% of total assessment</div>
+      </div>
+
+      <div class="form-group">
+        <label for="electrical">Electrical System</label>
+        <input type="number" id="electrical" min="1" max="10" required />
+        <div class="weight-info">Weight: 10% of total assessment</div>
+      </div>
+
+      <div class="form-group">
+        <label for="tyre">Tyre Condition</label>
+        <input type="number" id="tyre" min="1" max="10" required />
+        <div class="weight-info">Weight: 10% of total assessment</div>
+      </div>
+
+      <div class="form-group">
+        <label for="body">Body Condition</label>
+        <input type="number" id="body" min="1" max="10" required />
+        <div class="weight-info">Weight: 10% of total assessment</div>
+      </div>
+
+      <div class="form-group">
+        <label for="rust">Rust Level</label>
+        <input type="number" id="rust" min="1" max="10" required />
+        <div class="weight-info">Weight: 5% of total assessment</div>
+      </div>
+
+      <div class="form-group">
+        <label for="lights">Lighting System</label>
+        <input type="number" id="lights" min="1" max="10" required />
+        <div class="weight-info">Weight: 5% of total assessment</div>
+      </div>
+
+      <div class="form-group">
+        <label for="controls">Controls Functionality</label>
+        <input type="number" id="controls" min="1" max="10" required />
+        <div class="weight-info">Weight: 5% of total assessment</div>
+      </div>
+
+      <button id="assessBtn">Assess Retrofitting Needs</button>
+    </div>
+
+    <div id="results" class="results">
+      <h2>Retrofitting Assessment Results</h2>
+      <div id="progressBar" class="progress-container" style="display:none;">
+        <div id="progress" class="progress-bar"></div>
+      </div>
+      <div id="summary" class="summary"></div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const parameters = {
+        "Chassis": 15,
+        "Suspension": 15,
+        "Brakes": 15,
+        "Frame Integrity": 10,
+        "Electrical System": 10,
+        "Tyre Condition": 10,
+        "Body Condition": 10,
+        "Rust Level": 5,
+        "Lighting System": 5,
+        "Controls Functionality": 5
+      };
+
+      const parameterMap = {
+        "chassis": "Chassis",
+        "suspension": "Suspension",
+        "brakes": "Brakes",
+        "frame": "Frame Integrity",
+        "electrical": "Electrical System",
+        "tyre": "Tyre Condition",
+        "body": "Body Condition",
+        "rust": "Rust Level",
+        "lights": "Lighting System",
+        "controls": "Controls Functionality"
+      };
+
+      document.getElementById('assessBtn').addEventListener('click', function () {
+        let isValid = true;
+        const inputs = document.querySelectorAll('input[type="number"]');
+
+        inputs.forEach(input => {
+          if (!input.value || input.value < 1 || input.value > 10) {
+            isValid = false;
+            input.style.borderColor = 'red';
+          } else {
+            input.style.borderColor = '';
+          }
+        });
+
+        if (!isValid) {
+          alert('Please enter valid scores between 1 and 10 for all components.');
+          return;
+        }
+
+        const scores = {};
+        for (const [id, param] of Object.entries(parameterMap)) {
+          const input = document.getElementById(id);
+          scores[param] = parseInt(input.value);
+        }
+
+        let totalScore = 0;
+        for (const [param, score] of Object.entries(scores)) {
+          totalScore += (score / 10) * parameters[param];
+        }
+
+        displayResults(totalScore);
+      });
+
+      function displayResults(totalScore) {
+        const progress = document.getElementById('progress');
+        const progressBar = document.getElementById('progressBar');
+        const summary = document.getElementById('summary');
+
+        progressBar.style.display = 'block';
+
+        if (totalScore >= 80) {
+          progress.style.backgroundColor = '#2ecc71';
+          progress.textContent = totalScore.toFixed(0) + '% (Excellent)';
+        } else if (totalScore >= 70) {
+          progress.style.backgroundColor = '#f39c12';
+          progress.textContent = totalScore.toFixed(0) + '% (Good)';
+        } else {
+          progress.style.backgroundColor = '#e74c3c';
+          progress.textContent = totalScore.toFixed(0) + '% (Needs Improvement)';
+        }
+
+        progress.style.width = totalScore + '%';
+
+        summary.textContent = `Overall Vehicle Condition Score: ${totalScore.toFixed(1)}/100`;
+
+        document.getElementById('results').style.display = 'block';
+        document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  </script>
+</body>
+</html>
